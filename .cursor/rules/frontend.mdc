@@ -1,0 +1,6 @@
+---
+description: For frontend files
+globs: 
+alwaysApply: false
+---
+- file naming convention for components should always be kebab case.
