@@ -43,16 +43,20 @@ interface Person {
   items: number[];
 }
 
+interface ItemPortion {
+  itemId: number;
+  portions: number;
+}
+
 export default function SplitBillPage() {
   const router = useRouter();
   const [people, setPeople] = useState<Person[]>([
     { id: 1, name: "You", items: [] },
   ]);
   const [newPersonName, setNewPersonName] = useState("");
-  const [selectedItems, setSelectedItems] = useState<Record<number, number[]>>(
-    {}
-  );
+  const [selectedItems, setSelectedItems] = useState<Record<number, number[]>>({});
   const [showCopied, setShowCopied] = useState(false);
+
   const addPerson = () => {
     if (newPersonName.trim()) {
       setPeople([
@@ -81,7 +85,12 @@ export default function SplitBillPage() {
     const personItems = selectedItems[personId] || [];
     return personItems.reduce((total, itemId) => {
       const item = mockItems.find((i) => i.id === itemId);
-      return total + (item?.price || 0);
+      // Count how many people are sharing this item
+      const sharingCount = people.filter(p => 
+        selectedItems[p.id]?.includes(itemId)
+      ).length;
+      // Divide the price by the number of people sharing
+      return total + (item?.price || 0) / sharingCount;
     }, 0);
   };
 
@@ -94,6 +103,16 @@ export default function SplitBillPage() {
     if (!totalSubtotal) return 0;
     const share = subtotal / totalSubtotal;
     return share * (mockBill.tax + mockBill.tip);
+  };
+
+  // Helper function to check if an item is being shared
+  const isItemShared = (itemId: number) => {
+    return people.filter(p => selectedItems[p.id]?.includes(itemId)).length > 1;
+  };
+
+  // Helper function to get sharing count for an item
+  const getSharingCount = (itemId: number) => {
+    return people.filter(p => selectedItems[p.id]?.includes(itemId)).length;
   };
 
   const handleCopy = () => {
@@ -248,10 +267,17 @@ export default function SplitBillPage() {
                   {mockItems.map((item) => (
                     <tr
                       key={item.id}
-                      className="border-b border-slate-800/50 hover:bg-slate-700/30 transition-colors"
+                      className={`border-b border-slate-800/50 hover:bg-slate-700/30 transition-colors ${
+                        isItemShared(item.id) ? 'bg-blue-500/5' : ''
+                      }`}
                     >
                       <td className="py-3 flex items-center gap-2">
                         <span className="text-white font-medium">{item.name}</span>
+                        {isItemShared(item.id) && (
+                          <span className="text-xs text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-full">
+                            Shared ({getSharingCount(item.id)})
+                          </span>
+                        )}
                       </td>
                       <td className="py-3 text-white">
                         ${item.price.toFixed(2)}
@@ -326,6 +352,9 @@ export default function SplitBillPage() {
                   </div>
                   <div className="text-xs text-slate-500 mt-2">
                     {selectedItems[person.id]?.length || 0} items selected
+                    {selectedItems[person.id]?.some(itemId => isItemShared(itemId)) && (
+                      <span className="text-blue-400 ml-1">(including shared items)</span>
+                    )}
                   </div>
                 </div>
               ))}
