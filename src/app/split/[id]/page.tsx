@@ -43,11 +43,6 @@ interface Person {
   items: number[];
 }
 
-interface ItemPortion {
-  itemId: number;
-  portions: number;
-}
-
 export default function SplitBillPage() {
   const router = useRouter();
   const [people, setPeople] = useState<Person[]>([
@@ -269,15 +264,17 @@ export default function SplitBillPage() {
                       key={item.id}
                       className={`border-b border-slate-800/50 hover:bg-slate-700/30 transition-colors ${
                         isItemShared(item.id) ? 'bg-blue-500/5' : ''
-                      }`}
+                      } px-4`}
                     >
-                      <td className="py-3 flex items-center gap-2">
-                        <span className="text-white font-medium">{item.name}</span>
-                        {isItemShared(item.id) && (
-                          <span className="text-xs text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-full">
+                      <td className="py-3 pl-4 flex items-center justify-start gap-2 min-h-[48px]">
+                        <div className="flex items-center gap-2">
+                          <span className="text-white font-medium">{item.name}</span>
+                          <span className={`text-xs text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-full transition-all duration-50 w-[100px] ${
+                            isItemShared(item.id) ? 'opacity-100' : 'opacity-0'
+                          }`}>
                             Shared ({getSharingCount(item.id)})
                           </span>
-                        )}
+                        </div>
                       </td>
                       <td className="py-3 text-white">
                         ${item.price.toFixed(2)}
