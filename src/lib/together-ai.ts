@@ -14,31 +14,6 @@ export async function parseReceipt(image: string) {
     apiKey,
   });
 
-  // const prompt = `
-  //   You are a receipt parsing assistant. Extract the following information from the receipt image and return it in a clear markdown format:
-
-  //   * Restaurant: [restaurant name]
-  //   * Date: [date]
-  //   * Time: [time]
-  //   * Items:
-  //     * [item name] ($[price])
-  //     * [item name] ($[price])
-  //     * ... (list all items)
-  //   * Subtotal: $[amount]
-  //   * Tax: $[amount]
-  //   * Tip: $[amount]
-  //   * Total: $[amount]
-
-  //   Rules:
-  //   1. Use bullet points (*) for each line
-  //   2. Include the dollar sign ($) before prices
-  //   3. Put item prices in parentheses
-  //   4. List all items with their prices
-  //   5. Include all totals (subtotal, tax, tip, total)
-  //   6. If any information is missing, use "N/A"
-  //   7. Keep the format consistent with the example above
-  //   8. Do not use (**) to format the text
-  // `;
   const prompt = `
     You are a receipt parsing assistant. Extract the following information from the receipt image and return it in a structured format:
 
