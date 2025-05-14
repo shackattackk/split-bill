@@ -13,7 +13,7 @@ export default function Home() {
       icon: <ListChecks className="h-8 w-8 text-green-500" />,
       title: "Automatic Item Extraction",
       description:
-        "Our OCR technology accurately extracts item names and prices.",
+        "Our AI vision technology powered by Llama Vision accurately extracts item names and prices from your receipt.",
     },
     {
       icon: <Share2 className="h-8 w-8 text-purple-500" />,
