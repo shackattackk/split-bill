@@ -87,7 +87,7 @@ export default function Home() {
         </section>
 
         <footer className="text-center py-8 text-slate-500 border-t border-slate-700/50">
-          <p>&copy; {new Date().getFullYear()} SplitEase. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} SplitParty. All rights reserved.</p>
         </footer>
       </main>
     </div>

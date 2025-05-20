@@ -14,6 +14,7 @@ import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { parseReceipt } from "@/lib/together-ai";
 import { parseText } from "@/lib/text-parser";
+import { parseReceiptTask } from "@/app/api/actions"
 import { LoadingCard } from "@/components/loading-card";
 
 export function BillInputOptions() {
@@ -49,13 +50,14 @@ export function BillInputOptions() {
         const base64 = e.target?.result as string;
         localStorage.setItem("receiptImage", base64);
         try {
-          const parsedOutput = await parseReceipt(base64);
-          if (!parsedOutput) {
-            throw new Error("Failed to parse receipt");
-          }
-          console.log({ parsedOutput });
-          const jsonOutput = parseText(parsedOutput);
-          console.log({ jsonOutput });
+          // const parsedOutput = await parseReceipt(base64);
+          // if (!parsedOutput) {
+          //   throw new Error("Failed to parse receipt");
+          // }
+          // console.log({ parsedOutput });
+          // const jsonOutput = parseText(parsedOutput);
+          // console.log({ jsonOutput });
+          const receipt = await parseReceiptTask(base64);
         } catch (error) {
           setUploadError(
             error instanceof Error

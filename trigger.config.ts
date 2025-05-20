@@ -19,4 +19,7 @@ export default defineConfig({
     },
   },
   dirs: ["src/lib/trigger"],
+  build: {
+    external: ["pg"],
+  },
 });
