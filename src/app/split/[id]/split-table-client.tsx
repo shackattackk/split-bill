@@ -147,7 +147,7 @@ export default function SplitBillClient({ transaction }: SplitBillClientProps) {
           </Button>
           <div className="flex items-center">
             <Receipt className="h-5 w-5 text-blue-400 mr-2" />
-            <h1 className="text-lg font-semibold text-slate-100">Split Party</h1>
+            <h1 className="text-lg font-semibold text-slate-200">Split Party</h1>
           </div>
           <Button
             variant="ghost"
@@ -193,7 +193,7 @@ export default function SplitBillClient({ transaction }: SplitBillClientProps) {
                     <div className="text-xs text-slate-400 mb-1 flex items-center gap-1">
                       <DollarSign className="h-4 w-4 text-blue-400" /> Total
                     </div>
-                    <div className="text-lg font-semibold text-white">
+                    <div className="text-lg font-semibold text-slate-200">
                       ${(transaction.items.reduce((sum, item) => sum + item.price, 0) + transaction.tax + transaction.tip).toFixed(2)}
                     </div>
                   </div>
@@ -201,7 +201,7 @@ export default function SplitBillClient({ transaction }: SplitBillClientProps) {
                     <div className="text-xs text-slate-400 mb-1 flex items-center gap-1">
                       <DollarSign className="h-4 w-4 text-blue-400" /> Tax
                     </div>
-                    <div className="text-lg font-semibold text-white">
+                    <div className="text-lg font-semibold text-slate-200">
                       ${transaction.tax.toFixed(2)}
                     </div>
                   </div>
@@ -209,7 +209,7 @@ export default function SplitBillClient({ transaction }: SplitBillClientProps) {
                     <div className="text-xs text-slate-400 mb-1 flex items-center gap-1">
                       <DollarSign className="h-4 w-4 text-blue-400" /> Tip
                     </div>
-                    <div className="text-lg font-semibold text-white">
+                    <div className="text-lg font-semibold text-slate-200">
                       ${transaction.tip.toFixed(2)}
                     </div>
                   </div>
@@ -311,7 +311,7 @@ export default function SplitBillClient({ transaction }: SplitBillClientProps) {
                           <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center gap-2">
                               <div className="flex items-center gap-1.5">
-                                <span className="text-white font-medium text-sm sm:text-base">{item.name}</span>
+                                <span className="text-slate-200 font-medium text-sm sm:text-base">{item.name}</span>
                                 {isItemShared(item.id) && (
                                   <span className="hidden sm:inline text-xs text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-full">
                                     Shared ({getSharingCount(item.id)})
@@ -325,7 +325,7 @@ export default function SplitBillClient({ transaction }: SplitBillClientProps) {
                               )}
                             </div>
                             <div className="flex items-center gap-2">
-                              <span className="text-white font-medium text-sm sm:text-base">
+                              <span className="text-slate-200 font-medium text-sm sm:text-base">
                                 ${item.price.toFixed(2)}
                               </span>
                               <Button
@@ -406,13 +406,13 @@ export default function SplitBillClient({ transaction }: SplitBillClientProps) {
                         </div>
                         <div className="text-xs text-slate-400">
                           Subtotal:{" "}
-                          <span className="text-white">
+                          <span className="text-slate-200">
                             ${calculateSubtotal(person.id).toFixed(2)}
                           </span>
                         </div>
                         <div className="text-xs text-slate-400">
                           Tax + Tip:{" "}
-                          <span className="text-white">
+                          <span className="text-slate-200">
                             ${calculateTaxTip(person.id).toFixed(2)}
                           </span>
                         </div>
