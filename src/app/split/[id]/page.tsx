@@ -2,7 +2,7 @@ import { db } from "@/db";
 import { transactions, lineItems } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
-import SplitBillClient from "./split-table";
+import SplitBillClient from "./split-table-client";
 import { InferSelectModel } from "drizzle-orm";
 
 type Transaction = InferSelectModel<typeof transactions>;

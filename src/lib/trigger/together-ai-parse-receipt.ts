@@ -12,23 +12,23 @@ const together = new Together({
 const visionLLM = "meta-llama/Llama-Vision-Free";
 
 const receiptSchema = z.object({
-  restaurant: z.string(),
-  date: z.string(),
-  time: z.string(),
+  restaurant: z.string().optional(),
+  date: z.string().optional(),
+  time: z.string().optional(),
   items: z.array(
     z.object({
       name: z.string(),
       price: z.number(),
     })
   ),
-  subtotal: z.number(),
-  tax: z.number(),
-  tip: z.number(),
-  total: z.number(),
+  subtotal: z.number().optional(),
+  tax: z.number().optional(),
+  tip: z.number().optional(),
+  total: z.number().optional(),
 });
 
 const prompt = `
-You are a receipt parsing assistant. Extract the following information from the receipt image and return it in a structured format:
+You are a receipt parsing expert. Extract the following information from the receipt image and return it in a structured format:
 
 RESTAURANT: [restaurant name]
 DATE: [date]
@@ -49,10 +49,10 @@ Rules:
 3. Include the dollar sign ($) before all prices
 4. List all items with their prices, one per line
 5. Use END_ITEMS to mark the end of the items list
-6. For prices that are missing, use 0 as the price
-6. If any information is missing, use "N/A"
-7. Keep the format consistent with the example above
-8. Do not use markdown formatting
+6. Keep the format consistent with the example above
+7. Capture tax amount and tip amount otherwise return null
+8. Ensure all numerical values are accurate
+9. Do not use markdown formatting
 `;
 
 export const parseReceipt = task({
@@ -81,6 +81,7 @@ export const parseReceipt = task({
     if (!extractedText.choices[0].message?.content) {
       throw new Error("Failed to extract text from receipt. Retrying...");
     }
+    console.log(extractedText.choices[0].message?.content);
     const parsedText = parseText(extractedText.choices[0].message?.content);
     const parsedOutput = receiptSchema.safeParse(parsedText);
     if (!parsedOutput.success) {
@@ -94,12 +95,12 @@ export const parseReceipt = task({
         const [transaction] = await tx
           .insert(transactions)
           .values({
-            totalAmount: receiptData.total.toString(),
+            totalAmount: receiptData.total?.toString(),
             status: "active",
             imageUrl: "",
-            restaurant: receiptData.restaurant,
-            tax: receiptData.tax.toString() || "0",
-            tip: receiptData.tip.toString() || "0",
+            restaurant: receiptData?.restaurant,
+            tax: receiptData.tax?.toString(),
+            tip: receiptData.tip?.toString(),
           })
           .returning();
 

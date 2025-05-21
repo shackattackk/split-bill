@@ -12,16 +12,34 @@ import {
 import { Input } from "@/components/ui/input";
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { parseReceipt } from "@/lib/together-ai";
-import { parseText } from "@/lib/text-parser";
-import { parseReceiptTask } from "@/app/api/actions"
-import { LoadingCard } from "@/components/loading-card";
+import { useRealtimeRun } from "@trigger.dev/react-hooks";
+import { parseReceiptTask } from "@/app/api/actions";
+import { FullPageLoading } from "@/components/full-page-loading";
+
+interface TaskOutput {
+  runId: string;
+  publicAccessToken: string;
+}
 
 export function BillInputOptions() {
   const router = useRouter();
-  const [isUploading, setIsUploading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [taskOutput, setTaskOutput] = useState<TaskOutput | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const { run: runData, error: runError } = useRealtimeRun(taskOutput?.runId, {
+    accessToken: taskOutput?.publicAccessToken,
+    enabled: !!taskOutput?.runId,
+    onComplete: (run) => {
+      if (run.output?.transactionId) {
+        router.push(`/split/${run.output?.transactionId}`);
+      } else {
+        setIsLoading(false);
+        setUploadError("Failed to parse receipt");
+      }
+    },
+  });
 
   const handleUploadClick = () => {
     fileInputRef.current?.click();
@@ -32,7 +50,6 @@ export function BillInputOptions() {
     if (!file) return;
 
     setUploadError(null);
-    setIsUploading(true);
 
     try {
       const validTypes = ["image/png", "image/jpeg", "image/jpg"];
@@ -50,14 +67,14 @@ export function BillInputOptions() {
         const base64 = e.target?.result as string;
         localStorage.setItem("receiptImage", base64);
         try {
-          // const parsedOutput = await parseReceipt(base64);
-          // if (!parsedOutput) {
-          //   throw new Error("Failed to parse receipt");
-          // }
-          // console.log({ parsedOutput });
-          // const jsonOutput = parseText(parsedOutput);
-          // console.log({ jsonOutput });
-          const receipt = await parseReceiptTask(base64);
+          setIsLoading(true);
+          const taskOutput = await parseReceiptTask(base64);
+          if (taskOutput?.handle) {
+            setTaskOutput({
+              runId: taskOutput.handle.id,
+              publicAccessToken: taskOutput.handle.publicAccessToken,
+            });
+          }
         } catch (error) {
           setUploadError(
             error instanceof Error
@@ -65,7 +82,6 @@ export function BillInputOptions() {
               : "An error occurred during processing"
           );
         } finally {
-          setIsUploading(false);
           if (fileInputRef.current) {
             fileInputRef.current.value = "";
           }
@@ -78,7 +94,6 @@ export function BillInputOptions() {
           ? error.message
           : "An error occurred during upload"
       );
-      setIsUploading(false);
     }
   };
 
@@ -97,8 +112,8 @@ export function BillInputOptions() {
 
   return (
     <>
-      {isUploading ? (
-        <LoadingCard />
+      {isLoading ? (
+        <FullPageLoading />
       ) : (
         <Card className="mt-8 md:mt-12 max-w-lg mx-auto bg-slate-800/60 border-slate-700 shadow-2xl text-left ring-2 ring-slate-500/30 shadow-slate-500/40">
           <CardHeader>
@@ -123,8 +138,8 @@ export function BillInputOptions() {
                 variant="outline"
                 className="w-full justify-start gap-3 text-base py-6 border-slate-600 hover:bg-slate-700/50 hover:text-slate-100 cursor-pointer"
                 onClick={handleUploadClick}
-                disabled={isUploading}
-                aria-busy={isUploading}
+                disabled={isLoading}
+                aria-busy={isLoading}
               >
                 <Upload className="h-5 w-5 text-blue-400" />
                 Upload Receipt Image
