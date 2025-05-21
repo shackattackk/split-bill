@@ -46,15 +46,20 @@ interface SplitBillClientProps {
 }
 
 export default function SplitBillClient({ transaction }: SplitBillClientProps) {
-  const router = useRouter();
-  const [people, setPeople] = useState<Person[]>([
-    { id: 1, name: "You", items: [] },
-  ]);
+  const [people, setPeople] = useState<Person[]>([]);
   const [newPersonName, setNewPersonName] = useState("");
-  const [selectedItems, setSelectedItems] = useState<Record<number, number[]>>({});
+  const [selectedItems, setSelectedItems] = useState<Record<number, number[]>>(
+    {}
+  );
   const [showCopied, setShowCopied] = useState(false);
-  const [editingItem, setEditingItem] = useState<{ id: number; name: string; price: number } | null>(null);
-  const [editedItems, setEditedItems] = useState<TransactionItem[]>(transaction.items);
+  const [editingItem, setEditingItem] = useState<{
+    id: number;
+    name: string;
+    price: number;
+  } | null>(null);
+  const [editedItems, setEditedItems] = useState<TransactionItem[]>(
+    transaction.items
+  );
 
   const addPerson = () => {
     if (newPersonName.trim()) {
@@ -85,7 +90,7 @@ export default function SplitBillClient({ transaction }: SplitBillClientProps) {
     return personItems.reduce((total, itemId) => {
       const item = transaction.items.find((i) => i.id === itemId);
       // Count how many people are sharing this item
-      const sharingCount = people.filter(p => 
+      const sharingCount = people.filter((p) =>
         selectedItems[p.id]?.includes(itemId)
       ).length;
       // Divide the price by the number of people sharing
@@ -106,12 +111,14 @@ export default function SplitBillClient({ transaction }: SplitBillClientProps) {
 
   // Helper function to check if an item is being shared
   const isItemShared = (itemId: number) => {
-    return people.filter(p => selectedItems[p.id]?.includes(itemId)).length > 1;
+    return (
+      people.filter((p) => selectedItems[p.id]?.includes(itemId)).length > 1
+    );
   };
 
   // Helper function to get sharing count for an item
   const getSharingCount = (itemId: number) => {
-    return people.filter(p => selectedItems[p.id]?.includes(itemId)).length;
+    return people.filter((p) => selectedItems[p.id]?.includes(itemId)).length;
   };
 
   const handleCopy = () => {
@@ -124,10 +131,16 @@ export default function SplitBillClient({ transaction }: SplitBillClientProps) {
     setEditingItem(item);
   };
 
-  const handleSaveEdit = (itemId: number, newName: string, newPrice: number) => {
-    setEditedItems(prev => prev.map(item => 
-      item.id === itemId ? { ...item, name: newName, price: newPrice } : item
-    ));
+  const handleSaveEdit = (
+    itemId: number,
+    newName: string,
+    newPrice: number
+  ) => {
+    setEditedItems((prev) =>
+      prev.map((item) =>
+        item.id === itemId ? { ...item, name: newName, price: newPrice } : item
+      )
+    );
     setEditingItem(null);
   };
 
@@ -139,7 +152,12 @@ export default function SplitBillClient({ transaction }: SplitBillClientProps) {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white pb-8">
       <header className="w-full border-b border-slate-800/50 bg-slate-900/95 backdrop-blur-sm sticky top-0 z-10">
         <div className="container max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
-          <Button variant="ghost" size="sm" asChild className="text-slate-400 hover:text-slate-100 hover:bg-slate-700/50">
+          <Button
+            variant="ghost"
+            size="sm"
+            asChild
+            className="text-slate-400 hover:text-slate-100 hover:bg-slate-700/50"
+          >
             <Link href="/">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back
@@ -147,7 +165,9 @@ export default function SplitBillClient({ transaction }: SplitBillClientProps) {
           </Button>
           <div className="flex items-center">
             <Receipt className="h-5 w-5 text-blue-400 mr-2" />
-            <h1 className="text-lg font-semibold text-slate-200">Split Party</h1>
+            <h1 className="text-lg font-semibold text-slate-200">
+              Split Party
+            </h1>
           </div>
           <Button
             variant="ghost"
@@ -194,7 +214,15 @@ export default function SplitBillClient({ transaction }: SplitBillClientProps) {
                       <DollarSign className="h-4 w-4 text-blue-400" /> Total
                     </div>
                     <div className="text-lg font-semibold text-slate-200">
-                      ${(transaction.items.reduce((sum, item) => sum + item.price, 0) + transaction.tax + transaction.tip).toFixed(2)}
+                      $
+                      {(
+                        transaction.items.reduce(
+                          (sum, item) => sum + item.price,
+                          0
+                        ) +
+                        transaction.tax +
+                        transaction.tip
+                      ).toFixed(2)}
                     </div>
                   </div>
                   <div className="bg-slate-900/60 rounded-lg p-3 hover:bg-slate-900/80 transition-colors">
@@ -267,7 +295,9 @@ export default function SplitBillClient({ transaction }: SplitBillClientProps) {
                     <div
                       key={item.id}
                       className={`bg-slate-900/60 border border-slate-700/50 rounded-lg p-2 hover:bg-slate-900/80 transition-all ${
-                        isItemShared(item.id) ? 'bg-blue-500/5 border-blue-500/20' : ''
+                        isItemShared(item.id)
+                          ? "bg-blue-500/5 border-blue-500/20"
+                          : ""
                       }`}
                     >
                       {editingItem?.id === item.id ? (
@@ -275,14 +305,24 @@ export default function SplitBillClient({ transaction }: SplitBillClientProps) {
                           <div className="flex items-center gap-2">
                             <Input
                               value={editingItem.name}
-                              onChange={(e) => setEditingItem({ ...editingItem, name: e.target.value })}
+                              onChange={(e) =>
+                                setEditingItem({
+                                  ...editingItem,
+                                  name: e.target.value,
+                                })
+                              }
                               className="bg-slate-800 border-slate-700 text-white"
                               placeholder="Item name"
                             />
                             <Input
                               type="number"
                               value={editingItem.price}
-                              onChange={(e) => setEditingItem({ ...editingItem, price: parseFloat(e.target.value) || 0 })}
+                              onChange={(e) =>
+                                setEditingItem({
+                                  ...editingItem,
+                                  price: parseFloat(e.target.value) || 0,
+                                })
+                              }
                               className="bg-slate-800 border-slate-700 text-white w-24 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                               placeholder="Price"
                               step="0.01"
@@ -290,7 +330,13 @@ export default function SplitBillClient({ transaction }: SplitBillClientProps) {
                           </div>
                           <div className="flex gap-2">
                             <Button
-                              onClick={() => handleSaveEdit(item.id, editingItem.name, editingItem.price)}
+                              onClick={() =>
+                                handleSaveEdit(
+                                  item.id,
+                                  editingItem.name,
+                                  editingItem.price
+                                )
+                              }
                               className="bg-blue-600 hover:bg-blue-500 text-white cursor-pointer"
                               size="sm"
                             >
@@ -311,7 +357,9 @@ export default function SplitBillClient({ transaction }: SplitBillClientProps) {
                           <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center gap-2">
                               <div className="flex items-center gap-1.5">
-                                <span className="text-slate-200 font-medium text-sm sm:text-base">{item.name}</span>
+                                <span className="text-slate-200 font-medium text-sm sm:text-base">
+                                  {item.name}
+                                </span>
                                 {isItemShared(item.id) && (
                                   <span className="hidden sm:inline text-xs text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-full">
                                     Shared ({getSharingCount(item.id)})
@@ -384,7 +432,15 @@ export default function SplitBillClient({ transaction }: SplitBillClientProps) {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-white font-semibold mb-2">Payment Summary</div>
+                  {people.length == 0 ? (
+                    <div className="text-slate-400 text-sm mb-2">
+                      Add people to see your share
+                    </div>
+                  ) : (
+                    <div className="text-white font-semibold mb-2">
+                      Payment Summary
+                    </div>
+                  )}
                   <div className="space-y-3">
                     {people.map((person) => (
                       <div
@@ -418,8 +474,12 @@ export default function SplitBillClient({ transaction }: SplitBillClientProps) {
                         </div>
                         <div className="text-xs text-slate-500 mt-1">
                           {selectedItems[person.id]?.length || 0} items selected
-                          {selectedItems[person.id]?.some(itemId => isItemShared(itemId)) && (
-                            <span className="text-blue-400 ml-1">(including shared items)</span>
+                          {selectedItems[person.id]?.some((itemId) =>
+                            isItemShared(itemId)
+                          ) && (
+                            <span className="text-blue-400 ml-1">
+                              (including shared items)
+                            </span>
                           )}
                         </div>
                       </div>
@@ -436,4 +496,4 @@ export default function SplitBillClient({ transaction }: SplitBillClientProps) {
       </footer>
     </div>
   );
-} 
+}
