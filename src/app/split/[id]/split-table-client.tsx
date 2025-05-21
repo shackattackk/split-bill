@@ -171,10 +171,10 @@ export default function SplitBillClient({ transaction }: SplitBillClientProps) {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-slate-900/60 rounded-lg p-4 hover:bg-slate-900/80 transition-colors">
                 <div className="text-xs text-slate-400 mb-1 flex items-center gap-1">
-                  <Calendar className="h-4 w-4 text-blue-400" /> Date
+                  <DollarSign className="h-4 w-4 text-blue-400" /> Total
                 </div>
                 <div className="text-lg font-semibold text-white">
-                  {transaction.date}
+                  ${(transaction.items.reduce((sum, item) => sum + item.price, 0) + transaction.tax + transaction.tip).toFixed(2)}
                 </div>
               </div>
               <div className="bg-slate-900/60 rounded-lg p-4 hover:bg-slate-900/80 transition-colors">
