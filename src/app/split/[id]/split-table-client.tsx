@@ -277,10 +277,10 @@ export default function SplitBillClient({ transaction }: SplitBillClientProps) {
                           <button
                             key={person.id}
                             onClick={() => toggleItem(person.id, item.id)}
-                            className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-lg border text-xs sm:text-sm transition-all duration-200 cursor-pointer ${
+                            className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-lg border text-xs sm:text-sm transition-all duration-200 cursor-pointer active:scale-95 ${
                               selectedItems[person.id]?.includes(item.id)
-                                ? "border-blue-500 bg-blue-500/20 text-blue-400"
-                                : "border-slate-700 bg-slate-800/50 text-slate-300 hover:bg-slate-700/50"
+                                ? "border-blue-500 bg-blue-500/20 text-blue-400 shadow-sm shadow-blue-500/20"
+                                : "border-slate-700 bg-slate-800/50 text-slate-300 hover:bg-slate-700/50 hover:border-slate-600"
                             }`}
                           >
                             <span>{person.name}</span>
