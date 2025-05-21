@@ -244,67 +244,51 @@ export default function SplitBillClient({ transaction }: SplitBillClientProps) {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="overflow-x-auto">
-                  <table className="min-w-full text-left text-sm">
-                    <thead>
-                      <tr className="text-slate-400 border-b border-slate-700/50">
-                        <th className="py-2 font-medium">Item</th>
-                        <th className="py-2 font-medium">Price</th>
-                        {people.map((person) => (
-                          <th
-                            key={person.id}
-                            className="py-2 font-medium text-center"
-                          >
-                            {person.name}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {transaction.items.map((item) => (
-                        <tr
-                          key={item.id}
-                          className={`border-b border-slate-800/50 hover:bg-slate-700/30 transition-colors ${
-                            isItemShared(item.id) ? 'bg-blue-500/5' : ''
-                          }`}
-                        >
-                          <td className="py-2 pl-2 flex items-center justify-start gap-2 min-h-[40px]">
-                            <div className="flex items-center gap-2">
-                              <span className="text-white font-medium">{item.name}</span>
-                              <span className={`text-xs text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-full transition-all duration-50 ${
-                                isItemShared(item.id) ? 'opacity-100' : 'opacity-0'
-                              }`}>
+                <div className="space-y-2">
+                  {transaction.items.map((item) => (
+                    <div
+                      key={item.id}
+                      className={`bg-slate-900/60 border border-slate-700/50 rounded-lg p-2 hover:bg-slate-900/80 transition-all ${
+                        isItemShared(item.id) ? 'bg-blue-500/5 border-blue-500/20' : ''
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-white font-medium text-sm sm:text-base">{item.name}</span>
+                            {isItemShared(item.id) && (
+                              <span className="hidden sm:inline text-xs text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-full">
                                 Shared ({getSharingCount(item.id)})
                               </span>
-                            </div>
-                          </td>
-                          <td className="py-2 text-white">
-                            ${item.price.toFixed(2)}
-                          </td>
-                          {people.map((person) => (
-                            <td key={person.id} className="py-2 text-center">
-                              <button
-                                className={`inline-flex items-center justify-center w-5 h-5 rounded-full border-2 transition-all duration-200 cursor-pointer ${
-                                  selectedItems[person.id]?.includes(item.id)
-                                    ? "border-blue-500 bg-blue-600 hover:bg-blue-500"
-                                    : "border-slate-600 bg-transparent hover:border-blue-400 hover:bg-slate-700/50"
-                                }`}
-                                onClick={() => toggleItem(person.id, item.id)}
-                              >
-                                <Check 
-                                  className={`h-3 w-3 transition-all duration-200 ${
-                                    selectedItems[person.id]?.includes(item.id)
-                                      ? "text-white opacity-100 scale-100"
-                                      : "opacity-0 scale-75"
-                                  }`}
-                                />
-                              </button>
-                            </td>
-                          ))}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                            )}
+                          </div>
+                          {isItemShared(item.id) && (
+                            <span className="sm:hidden flex items-center justify-center w-4 h-4 rounded-full bg-blue-500/20 text-blue-400">
+                              <Share2 className="h-3 w-3" />
+                            </span>
+                          )}
+                        </div>
+                        <span className="text-white font-medium text-sm sm:text-base">
+                          ${item.price.toFixed(2)}
+                        </span>
+                      </div>
+                      <div className="flex flex-wrap gap-1.5">
+                        {people.map((person) => (
+                          <button
+                            key={person.id}
+                            onClick={() => toggleItem(person.id, item.id)}
+                            className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-lg border text-xs sm:text-sm transition-all duration-200 cursor-pointer ${
+                              selectedItems[person.id]?.includes(item.id)
+                                ? "border-blue-500 bg-blue-500/20 text-blue-400"
+                                : "border-slate-700 bg-slate-800/50 text-slate-300 hover:bg-slate-700/50"
+                            }`}
+                          >
+                            <span>{person.name}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </CardContent>
             </Card>
