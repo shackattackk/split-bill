@@ -11,6 +11,7 @@ export interface Transaction {
   tax: number;
   tip: number;
   items: TransactionItem[];
+  participants: Person[];
 }
 
 export interface Person {

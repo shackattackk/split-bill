@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { transactions, lineItems } from "@/db/schema";
+import { transactions, lineItems, participants, participantItems } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import SplitBillClient from "./split-table-client";
@@ -7,6 +7,8 @@ import { InferSelectModel } from "drizzle-orm";
 
 type Transaction = InferSelectModel<typeof transactions>;
 type LineItem = InferSelectModel<typeof lineItems>;
+type Participant = InferSelectModel<typeof participants>;
+type ParticipantItem = InferSelectModel<typeof participantItems>;
 
 interface PageProps {
   params: {
@@ -20,6 +22,11 @@ export default async function SplitBillPage({ params }: PageProps) {
     where: eq(transactions.id, transactionId),
     with: {
       lineItems: true,
+      participants: {
+        with: {
+          participantItems: true
+        }
+      }
     },
   });
 
@@ -39,6 +46,13 @@ export default async function SplitBillPage({ params }: PageProps) {
           id: item.id,
           name: item.description || "Unknown Item",
           price: Number(item.amount),
+        })),
+        participants: transaction.participants.map((participant) => ({
+          id: participant.id,
+          name: participant.name || "Unknown Person",
+          items: (participant as any).participantItems
+            .filter((pi: ParticipantItem) => pi.isSelected)
+            .map((pi: ParticipantItem) => pi.lineItemId),
         })),
       }}
     />
