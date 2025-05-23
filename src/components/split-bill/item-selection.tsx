@@ -46,7 +46,7 @@ export function ItemSelection({
           {items.map((item) => (
             <div
               key={item.id}
-              className={`bg-slate-900/60 border border-slate-700/50 rounded-lg p-2 hover:bg-slate-900/80 transition-all ${
+              className={`bg-slate-900/60 border border-slate-700/50 rounded-lg p-3 hover:bg-slate-900/80 transition-all ${
                 isItemShared(item.id)
                   ? "bg-blue-500/5 border-blue-500/20"
                   : ""
@@ -109,23 +109,23 @@ export function ItemSelection({
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
                       <div className="flex items-center gap-1.5">
-                        <span className="text-slate-200 font-medium text-sm sm:text-base">
+                        <span className="text-white font-medium text-base sm:text-lg">
                           {item.name}
                         </span>
                         {isItemShared(item.id) && (
-                          <span className="hidden sm:inline text-xs text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-full">
+                          <span className="hidden sm:inline text-xs font-medium text-blue-300 bg-blue-500/10 px-2 py-0.5 rounded-full">
                             Shared ({getSharingCount(item.id)})
                           </span>
                         )}
                       </div>
                       {isItemShared(item.id) && (
-                        <span className="sm:hidden flex items-center justify-center w-4 h-4 rounded-full bg-blue-500/20 text-blue-400">
+                        <span className="sm:hidden flex items-center justify-center w-4 h-4 rounded-full bg-blue-500/20 text-blue-300">
                           <Share2 className="h-3 w-3" />
                         </span>
                       )}
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-slate-200 font-medium text-sm sm:text-base">
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-blue-400 font-semibold text-base sm:text-lg">
                         ${item.price.toFixed(2)}
                       </span>
                       <Button
