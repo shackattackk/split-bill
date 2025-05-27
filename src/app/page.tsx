@@ -42,7 +42,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 text-white flex flex-col items-center justify-center p-4 md:p-8">
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 md:p-8">
       <main className="container mx-auto max-w-4xl space-y-12 md:space-y-16">
         {/* Hero Section */}
         <section className="text-center space-y-6">
