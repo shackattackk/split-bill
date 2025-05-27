@@ -42,10 +42,10 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 md:p-8">
-      <main className="container mx-auto max-w-4xl space-y-12 md:space-y-16">
+    <div className="min-h-screen flex flex-col">
+      <main className="container mx-auto max-w-4xl">
         {/* Hero Section */}
-        <section className="text-center space-y-6">
+        <section className="text-center space-y-8 min-h-screen flex flex-col justify-center p-4 md:p-8">
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-pink-500 to-yellow-500">
             Split Bills, Not Friendships.
           </h1>
@@ -58,7 +58,7 @@ export default function Home() {
         </section>
 
         {/* Features Section */}
-        <section className="space-y-10 md:space-y-12 py-12 md:py-16">
+        <section className="space-y-10 md:space-y-12 py-12 md:py-16 px-4 md:px-8">
           <div className="text-center">
             <h2 className="text-3xl md:text-4xl font-bold text-slate-100">
               How It Works
@@ -86,7 +86,7 @@ export default function Home() {
           </div>
         </section>
 
-        <footer className="text-center py-8 text-slate-500 border-t border-slate-700/50">
+        <footer className="text-center py-8 text-slate-500 border-t border-slate-700/50 px-4 md:px-8">
           <p>&copy; {new Date().getFullYear()} SplitParty. All rights reserved.</p>
         </footer>
       </main>
