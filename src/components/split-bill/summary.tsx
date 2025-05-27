@@ -65,7 +65,7 @@ export function Summary({
               <div className="flex items-center gap-2 mb-1">
                 <UserPlus className="h-4 w-4 text-blue-400" />
                 <span className="font-bold text-blue-400">{person.name}</span>
-                <span className="ml-auto text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">
+                <span className="ml-auto text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-blue-400 font-semibold text-base sm:text-lg">
                   ${(calculateSubtotal(person.id) + calculateTaxTip(person.id)).toFixed(2)}
                 </span>
               </div>
