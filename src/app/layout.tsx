@@ -15,6 +15,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Split Party",
   description: "Split Bills, Not Friendships.",
+  icons: {
+    icon: '/favicon.png',
+  },
 };
 
 export default function RootLayout({
