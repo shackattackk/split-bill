@@ -17,7 +17,6 @@ A modern web application built with Next.js for easily splitting bills and expen
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
 - **Database**: Supabase with Drizzle ORM
-- **Authentication**: Supabase Auth
 - **Background Jobs**: Trigger.dev
 - **AI Integration**: Together AI
 
