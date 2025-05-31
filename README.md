@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Split Bill
+
+A modern web application built with Next.js for easily splitting bills and expenses among friends, roommates, or groups.
+
+## Features
+
+- Modern UI built with Next.js and Tailwind CSS
+- Real-time updates and notifications
+- OCR capabilities for receipt scanning
+- AI-powered expense categorization
+- Secure authentication with Supabase
+- Background job processing with Trigger.dev
+
+## Tech Stack
+
+- **Framework**: Next.js 15.3.2
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Database**: Supabase with Drizzle ORM
+- **Authentication**: Supabase Auth
+- **Background Jobs**: Trigger.dev
+- **AI Integration**: Together AI
+
+
+## Prerequisites
+
+- Node.js (Latest LTS version recommended)
+- pnpm (v10.11.0 or later)
+- Supabase account
+- Trigger.dev account
+- Together AI API key
 
 ## Getting Started
 
-First, run the development server:
-
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/yourusername/split-bill.git
+cd split-bill
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+pnpm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Set up environment variables:
+Create a `.env` file in the root directory with the following variables:
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+TRIGGER_API_KEY=your_trigger_api_key
+TOGETHER_API_KEY=your_together_api_key
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Run the development server:
+```bash
+pnpm dev
+```
 
-## Learn More
+This will start both the Next.js development server and Trigger.dev worker.
 
-To learn more about Next.js, take a look at the following resources:
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Available Scripts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `pnpm dev` - Start development server with Trigger.dev worker
+- `pnpm build` - Build the application for production
+- `pnpm start` - Start the production server
+- `pnpm lint` - Run ESLint
+- `pnpm trigger:dev` - Start Trigger.dev worker in development mode
 
-## Deploy on Vercel
+## Contributing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
