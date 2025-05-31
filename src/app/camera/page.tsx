@@ -50,7 +50,7 @@ export default function CameraPage() {
       ctx.drawImage(videoRef.current, 0, 0);
       canvas.toBlob((blob) => {
         if (blob) {
-          const file = new File([blob], 'camera-photo.jpg', { type: 'image/jpeg' });
+          // const file = new File([blob], 'camera-photo.jpg', { type: 'image/jpeg' });
           // Store the file in localStorage or state management
           localStorage.setItem('capturedPhoto', URL.createObjectURL(blob));
           stopCamera();

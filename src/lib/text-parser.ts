@@ -13,19 +13,16 @@ export function parseText(text: string): Receipt {
   };
 
   let isItemsSection = false;
-  let items: ReceiptItem[] = [];
+  const items: ReceiptItem[] = [];
   
   const lines = text.split("\n").map((line) => line.trim());
   for (const line of lines) {
     if (line.startsWith("RESTAURANT:")) {
-      const [_, restaurant] = line.split(": ");
-      receipt.restaurant = restaurant.trim();
+      receipt.restaurant = line.split(": ")[1].trim();
     } else if (line.startsWith("DATE:")) {
-      const [_, date] = line.split(": ");
-      receipt.date = date.trim();
+      receipt.date = line.split(": ")[1].trim();
     } else if (line.startsWith("TIME:")) {
-      const [_, time] = line.split(": ");
-      receipt.time = time.trim();
+      receipt.time = line.split(": ")[1].trim();
     } else if (line.startsWith("ITEMS:")) {
       isItemsSection = true;
       continue;
@@ -33,17 +30,13 @@ export function parseText(text: string): Receipt {
       isItemsSection = false;
       continue;
     } else if (line.startsWith("SUBTOTAL:")) {
-      const [_, subtotal] = line.split(": ");
-      receipt.subtotal = parseFloat(subtotal.trim().replace("$", ""));
+      receipt.subtotal = parseFloat(line.split(": ")[1].trim().replace("$", ""));
     } else if (line.startsWith("TAX:")) {
-      const [_, tax] = line.split(": ");
-      receipt.tax = parseFloat(tax.trim().replace("$", ""));
+      receipt.tax = parseFloat(line.split(": ")[1].trim().replace("$", ""));
     } else if (line.startsWith("TIP:")) {
-      const [_, tip] = line.split(": ");
-      receipt.tip = parseFloat(tip.trim().replace("$", ""));
+      receipt.tip = parseFloat(line.split(": ")[1].trim().replace("$", ""));
     } else if (line.startsWith("TOTAL:")) {
-      const [_, total] = line.split(": ");
-      receipt.total = parseFloat(total.trim().replace("$", ""));
+      receipt.total = parseFloat(line.split(": ")[1].trim().replace("$", ""));
     }
     if (isItemsSection) {
       const [name, price] = line.split("|");

@@ -28,7 +28,7 @@ export function BillInputOptions() {
   const [taskOutput, setTaskOutput] = useState<TaskOutput | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const { run: runData, error: runError } = useRealtimeRun(taskOutput?.runId, {
+  useRealtimeRun(taskOutput?.runId, {
     accessToken: taskOutput?.publicAccessToken,
     enabled: !!taskOutput?.runId,
     onComplete: (run) => {

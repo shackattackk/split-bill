@@ -26,10 +26,6 @@ export function Header() {
             Back
           </Link>
         </Button>
-        <div className="flex items-center">
-          <Receipt className="h-5 w-5 text-blue-400 mr-2" />
-          <h1 className="text-lg font-semibold text-slate-200">Split Party</h1>
-        </div>
         <Button
           variant="ghost"
           size="icon"

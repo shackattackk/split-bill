@@ -5,7 +5,6 @@ import { notFound } from "next/navigation";
 import SplitBillClient from "./split-table-client";
 import { InferSelectModel } from "drizzle-orm";
 
-type Transaction = InferSelectModel<typeof transactions>;
 type LineItem = InferSelectModel<typeof lineItems>;
 type Participant = InferSelectModel<typeof participants>;
 type ParticipantItem = InferSelectModel<typeof participantItems>;
@@ -47,12 +46,12 @@ export default async function SplitBillPage({ params }: PageProps) {
           name: item.description || "Unknown Item",
           price: Number(item.amount),
         })),
-        participants: transaction.participants.map((participant) => ({
+        participants: transaction.participants.map((participant: Participant & { participantItems: ParticipantItem[] }) => ({
           id: participant.id,
           name: participant.name || "Unknown Person",
-          items: (participant as any).participantItems
-            .filter((pi: ParticipantItem) => pi.isSelected)
-            .map((pi: ParticipantItem) => pi.lineItemId),
+          items: participant.participantItems
+            .filter((pi) => pi.isSelected && pi.lineItemId !== null)
+            .map((pi) => pi.lineItemId as number),
         })),
       }}
     />
