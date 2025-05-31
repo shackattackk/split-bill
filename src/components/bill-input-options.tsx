@@ -57,7 +57,7 @@ export function BillInputOptions() {
         throw new Error("Please upload a valid image file (PNG, JPEG, JPG)");
       }
 
-      const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+      const maxSize = 5 * 1024 * 1024;
       if (file.size > maxSize) {
         throw new Error("File size must be less than 5MB");
       }
@@ -107,7 +107,7 @@ export function BillInputOptions() {
   };
 
   const handleManualEntryClick = () => {
-    console.log("Enter Items Manually clicked");
+    router.push("/manual-entry");
   };
 
   return (

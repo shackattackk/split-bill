@@ -81,7 +81,6 @@ export const parseReceipt = task({
     if (!extractedText.choices[0].message?.content) {
       throw new Error("Failed to extract text from receipt. Retrying...");
     }
-    console.log(extractedText.choices[0].message?.content);
     const parsedText = parseText(extractedText.choices[0].message?.content);
     const parsedOutput = receiptSchema.safeParse(parsedText);
     if (!parsedOutput.success) {

@@ -1,6 +1,8 @@
 ---
-description: For frontend files
-globs: 
+description: 
+globs: *.tsx,*.ts
 alwaysApply: false
 ---
-- file naming convention for components should always be kebab case.
+
+
+- use `kebab-case` for filenames
