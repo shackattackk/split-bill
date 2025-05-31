@@ -1,4 +1,4 @@
-# Split Bill
+# Split Party
 
 A modern web application built with Next.js that enables real-time collaborative bill splitting. Friends can instantly see updates as others select items and modify expenses, making it easy to split bills and expenses among groups.
 
@@ -7,8 +7,6 @@ A modern web application built with Next.js that enables real-time collaborative
 - Modern UI built with Next.js and Tailwind CSS
 - Real-time updates and notifications
 - OCR capabilities for receipt scanning
-- AI-powered expense categorization
-- Secure authentication with Supabase
 - Background job processing with Trigger.dev
 
 ## Tech Stack

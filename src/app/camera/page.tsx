@@ -29,12 +29,21 @@ export default function CameraPage() {
   };
 
   const stopCamera = () => {
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach(track => track.stop());
-      streamRef.current = null;
-    }
-    if (videoRef.current) {
-      videoRef.current.srcObject = null;
+    try {
+      if (streamRef.current) {
+        const tracks = streamRef.current.getTracks();
+        tracks.forEach(track => {
+          track.stop();
+          track.enabled = false;
+        });
+        streamRef.current = null;
+      }
+      if (videoRef.current) {
+        videoRef.current.srcObject = null;
+        videoRef.current.load();
+      }
+    } catch (error) {
+      console.error('Error stopping camera:', error);
     }
   };
 
@@ -62,52 +71,61 @@ export default function CameraPage() {
 
   useEffect(() => {
     startCamera();
-    return () => stopCamera();
+    
+    // Cleanup function
+    return () => {
+      stopCamera();
+      // Additional cleanup
+      if (videoRef.current) {
+        videoRef.current.srcObject = null;
+        videoRef.current.load();
+      }
+    };
   }, []);
 
+  const handleCancel = () => {
+    stopCamera();
+    router.back();
+  };
+
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-slate-900 to-slate-800  flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-md sm:max-w-2xl bg-slate-800/70 rounded-xl shadow-lg border border-slate-700">
-        <header className="flex items-center justify-between p-3 sm:p-4 border-b border-slate-700">
-          <h1 className="text-xl text-white">Take Photo</h1>
+    <div className="absolute inset-0 bg-gradient-to-br from-slate-900 to-slate-800 flex flex-col items-center justify-center p-4">
+      <div className="w-full max-w-md sm:max-w-2xl bg-slate-800/70 backdrop-blur-sm rounded-2xl shadow-2xl border border-slate-700">
+        <header className="flex items-center justify-between p-4 border-b border-slate-800">
+          <h1 className="text-xl font-medium text-white">Take Photo</h1>
           <Button
             variant="ghost"
             size="icon"
-            className="hover:bg-slate-700/50 hover:text-slate-100 cursor-pointer"
-            onClick={() => {
-              stopCamera();
-              router.back();
-            }}
+            className="hover:bg-slate-800/50 text-slate-400 hover:text-white transition-colors"
+            onClick={handleCancel}
           >
-            <X className="h-6 w-6 text-white" />
+            <X className="h-6 w-6" />
           </Button>
         </header>
         <main className="flex flex-col">
-          <div className="relative bg-black aspect-[4/3]">
+          <div className="relative bg-black aspect-[4/3] rounded-b-2xl overflow-hidden">
             <video
               ref={videoRef}
               autoPlay
               playsInline
               className="w-full h-full object-cover"
             />
+            <div className="absolute inset-0 border-4 border-slate-800/50 rounded-b-2xl pointer-events-none" />
           </div>
           {error && (
-            <p className="mt-4 text-sm text-red-400 text-center">{error}</p>
+            <p className="mt-4 text-sm text-red-400 text-center px-4">{error}</p>
           )}
-          <div className="p-3 sm:p-4 flex gap-3 sm:gap-4">
+          <div className="p-4 flex gap-4">
             <Button
               variant="outline"
-              className="flex-1 border-slate-600 hover:bg-slate-700/50 hover:text-slate-100 cursor-pointer"
-              onClick={() => {
-                stopCamera();
-                router.back();
-              }}
+              className="flex-1 border-slate-700 bg-slate-800/50 hover:bg-slate-700 text-white transition-colors"
+              onClick={handleCancel}
             >
               Cancel
             </Button>
             <Button
               variant="default"
-              className="flex-1 hover:bg-slate-700/50 hover:text-slate-100 bg-blue-500 cursor-pointer"
+              className="flex-1 bg-blue-600 hover:bg-blue-700 text-white transition-colors"
               onClick={capturePhoto}
             >
               Take Photo
