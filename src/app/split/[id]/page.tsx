@@ -16,7 +16,7 @@ interface PageProps {
 }
 
 export default async function SplitBillPage({ params }: PageProps) {
-  const { id: transactionId } = await params;
+  const { id: transactionId } = params;
   const transaction = await db.query.transactions.findFirst({
     where: eq(transactions.id, transactionId),
     with: {
