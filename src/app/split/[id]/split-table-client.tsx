@@ -14,12 +14,13 @@ interface SplitBillClientProps {
   transaction: Transaction;
 }
 
-export default function SplitBillClient({ transaction }: SplitBillClientProps) {
+export default function SplitBillClient({ transaction: initialTransaction }: SplitBillClientProps) {
+  const [transaction, setTransaction] = useState(initialTransaction);
   const { people, editedItems, selectedItems, setSelectedItems } =
     useSplitBillSubscriptions(
-      transaction.id,
-      transaction.participants,
-      transaction.items
+      initialTransaction.id,
+      initialTransaction.participants,
+      initialTransaction.items
     );
 
   const [editingItem, setEditingItem] = useState<TransactionItem | null>(null);
@@ -98,6 +99,28 @@ export default function SplitBillClient({ transaction }: SplitBillClientProps) {
     setEditingItem(null);
   };
 
+  const handleUpdateTaxTip = async (updates: { tax?: number; tip?: number }) => {
+    try {
+      const { error } = await supabase
+        .from("transactions")
+        .update({
+          tax: updates.tax?.toString(),
+          tip: updates.tip?.toString(),
+        })
+        .eq("id", transaction.id);
+
+      if (error) throw error;
+
+      setTransaction(prev => ({
+        ...prev,
+        tax: updates.tax ?? prev.tax,
+        tip: updates.tip ?? prev.tip,
+      }));
+    } catch (err) {
+      console.error("Error updating tax/tip:", err);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white pb-8">
       <Header />
@@ -114,7 +137,7 @@ export default function SplitBillClient({ transaction }: SplitBillClientProps) {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <div className="lg:col-span-2 space-y-4">
-            <BillInfo transaction={transaction} />
+            <BillInfo transaction={transaction} onUpdate={handleUpdateTaxTip} />
             <PeopleManagement people={people} onAddPerson={addPerson} />
             <ItemSelection
               items={editedItems}

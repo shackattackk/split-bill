@@ -53,6 +53,7 @@ Rules:
 7. Capture tax amount and tip amount otherwise return null
 8. Ensure all numerical values are accurate
 9. Do not use markdown formatting
+10. Tip is also called gratuity
 `;
 
 export const parseReceipt = task({
@@ -119,8 +120,7 @@ export const parseReceipt = task({
         };
       });
     } catch (error) {
-      console.error("Failed to save receipt data:", error);
-      throw new Error("Failed to save receipt data. Please try again.");
+      throw new Error("Failed to save receipt data. Please try again. " + error);
     }
   },
 });
