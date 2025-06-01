@@ -22,8 +22,8 @@ const receiptSchema = z.object({
     })
   ),
   subtotal: z.number().optional(),
-  tax: z.number().optional(),
-  tip: z.number().optional(),
+  tax: z.number().nullable().optional(),
+  tip: z.number().nullable().optional(),
   total: z.number().optional(),
 });
 
