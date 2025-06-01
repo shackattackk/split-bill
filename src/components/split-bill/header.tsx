@@ -1,4 +1,4 @@
-import { ArrowLeft, Receipt, Share2 } from "lucide-react";
+import { ArrowLeft, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useState } from "react";
