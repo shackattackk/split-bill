@@ -10,13 +10,13 @@ type Participant = InferSelectModel<typeof participants>;
 type ParticipantItem = InferSelectModel<typeof participantItems>;
 
 interface PageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function SplitBillPage({ params }: PageProps) {
-  const { id: transactionId } = params;
+  const { id: transactionId } = await params;
   const transaction = await db.query.transactions.findFirst({
     where: eq(transactions.id, transactionId),
     with: {
