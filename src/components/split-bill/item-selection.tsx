@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Person, TransactionItem } from "@/types/split-bill";
+import { useItemSharing } from "@/hooks/use-item-sharing";
 
 interface ItemSelectionProps {
   items: TransactionItem[];
@@ -25,13 +26,7 @@ export function ItemSelection({
   onCancelEdit,
   editingItem,
 }: ItemSelectionProps) {
-  const isItemShared = (itemId: number) => {
-    return people.filter((p) => selectedItems[p.id]?.includes(itemId)).length > 1;
-  };
-
-  const getSharingCount = (itemId: number) => {
-    return people.filter((p) => selectedItems[p.id]?.includes(itemId)).length;
-  };
+  const { getSharingCount, isItemShared } = useItemSharing({ items, people, selectedItems });
 
   return (
     <Card className="bg-slate-800/80 border border-slate-700/50 rounded-xl shadow-lg shadow-blue-500/5">
