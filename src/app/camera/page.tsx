@@ -4,12 +4,32 @@ import { useRouter } from "next/navigation";
 import { useRef, useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
+import { parseReceiptTask } from "../api/actions";
+import { TaskOutput } from "@/types/task";
+import { useRealtimeRun } from "@trigger.dev/react-hooks";
 
 export default function CameraPage() {
   const router = useRouter();
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [taskOutput, setTaskOutput] = useState<TaskOutput | null>(null);
+
+  useRealtimeRun(taskOutput?.runId, {
+    accessToken: taskOutput?.publicAccessToken,
+    enabled: !!taskOutput?.runId,
+    onComplete: (run) => {
+      if (run.output?.transactionId) {
+        router.push(`/split/${run.output?.transactionId}`);
+      } else {
+        setIsLoading(false);
+        setError("Failed to parse receipt");
+      }
+    },
+  });
+
+
 
   const startCamera = async () => {
     try {
@@ -47,7 +67,7 @@ export default function CameraPage() {
     }
   };
 
-  const capturePhoto = () => {
+  const capturePhoto = async () => {
     if (!videoRef.current) return;
 
     const canvas = document.createElement('canvas');
@@ -59,11 +79,19 @@ export default function CameraPage() {
       ctx.drawImage(videoRef.current, 0, 0);
       canvas.toBlob((blob) => {
         if (blob) {
-          // const file = new File([blob], 'camera-photo.jpg', { type: 'image/jpeg' });
-          // Store the file in localStorage or state management
-          localStorage.setItem('capturedPhoto', URL.createObjectURL(blob));
-          stopCamera();
-          router.back();
+          const reader = new FileReader();
+          reader.onload = async (e) => {
+            const base64data = e.target?.result as string;
+            const taskOutput = await parseReceiptTask(base64data);
+            if (taskOutput?.handle) {
+              setTaskOutput({
+                runId: taskOutput.handle.id,
+                publicAccessToken: taskOutput.handle.publicAccessToken,
+              });
+            }
+            stopCamera();
+          };
+          reader.readAsDataURL(blob);
         }
       }, 'image/jpeg');
     }
@@ -72,10 +100,8 @@ export default function CameraPage() {
   useEffect(() => {
     startCamera();
     
-    // Cleanup function
     return () => {
       stopCamera();
-      // Additional cleanup
       if (videoRef.current) {
         videoRef.current.srcObject = null;
         videoRef.current.load();

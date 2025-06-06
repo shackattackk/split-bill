@@ -15,11 +15,7 @@ import { useRouter } from "next/navigation";
 import { useRealtimeRun } from "@trigger.dev/react-hooks";
 import { parseReceiptTask } from "@/app/api/actions";
 import { FullPageLoading } from "@/components/full-page-loading";
-
-interface TaskOutput {
-  runId: string;
-  publicAccessToken: string;
-}
+import { TaskOutput } from "@/types/task";
 
 export function BillInputOptions() {
   const router = useRouter();
