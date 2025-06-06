@@ -81,6 +81,7 @@ export default function CameraPage() {
       ctx.drawImage(videoRef.current, 0, 0);
       canvas.toBlob((blob) => {
         if (blob) {
+          setIsLoading(true);
           const reader = new FileReader();
           reader.onload = async (e) => {
             const base64data = e.target?.result as string;
