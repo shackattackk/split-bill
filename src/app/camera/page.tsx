@@ -136,12 +136,13 @@ export default function CameraPage() {
               </Button>
             </header>
             <main className="flex flex-col">
-              <div className="relative bg-black aspect-[4/3] rounded-b-2xl overflow-hidden">
+              <div className="relative bg-black aspect-[3/4] rounded-b-2xl overflow-hidden">
                 <video
                   ref={videoRef}
                   autoPlay
                   playsInline
                   className="w-full h-full object-cover"
+                  style={{ transform: 'scale(1.1)' }}
                 />
                 <div className="absolute inset-0 border-4 border-slate-800/50 rounded-b-2xl pointer-events-none" />
               </div>
