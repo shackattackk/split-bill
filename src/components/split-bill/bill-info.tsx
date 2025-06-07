@@ -1,8 +1,7 @@
-import { Utensils, DollarSign, Pencil } from "lucide-react";
+import { Utensils, DollarSign } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Transaction } from "@/types/split-bill";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 interface BillInfoProps {
