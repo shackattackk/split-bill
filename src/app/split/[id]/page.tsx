@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import SplitBillClient from "./split-table-client";
 import { InferSelectModel } from "drizzle-orm";
+import { z } from "zod";
 
 type LineItem = InferSelectModel<typeof lineItems>;
 type Participant = InferSelectModel<typeof participants>;
@@ -15,8 +16,18 @@ interface PageProps {
   }>;
 }
 
+const paramsSchema = z.object({
+  id: z.string().uuid(),
+});
+
 export default async function SplitBillPage({ params }: PageProps) {
   const { id: transactionId } = await params;
+ 
+  const parsedParams = paramsSchema.safeParse({id: transactionId});
+  if (!parsedParams.success) {
+    notFound();
+  }
+
   const transaction = await db.query.transactions.findFirst({
     where: eq(transactions.id, transactionId),
     with: {

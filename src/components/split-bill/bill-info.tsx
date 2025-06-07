@@ -41,7 +41,7 @@ export function BillInfo({ transaction, onUpdate }: BillInfoProps) {
             <div className="text-xs text-slate-400 mb-1 flex items-center gap-1">
               <DollarSign className="h-4 w-4 text-blue-400" /> Tax
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center min-h-[28px]">
               {editingTax ? (
                 <Input
                   type="number"
@@ -53,19 +53,12 @@ export function BillInfo({ transaction, onUpdate }: BillInfoProps) {
                   step="0.01"
                 />
               ) : (
-                <>
-                  <div className="text-lg font-semibold text-slate-200">
-                    ${transaction.tax.toFixed(2)}
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8 text-slate-400 hover:text-slate-100 hover:bg-slate-700/50"
-                    onClick={() => setEditingTax(true)}
-                  >
-                    <Pencil className="h-4 w-4" />
-                  </Button>
-                </>
+                <div 
+                  className="text-lg font-semibold text-slate-200 cursor-pointer hover:text-slate-100"
+                  onClick={() => setEditingTax(true)}
+                >
+                  ${transaction.tax.toFixed(2)}
+                </div>
               )}
             </div>
           </div>
@@ -73,7 +66,7 @@ export function BillInfo({ transaction, onUpdate }: BillInfoProps) {
             <div className="text-xs text-slate-400 mb-1 flex items-center gap-1">
               <DollarSign className="h-4 w-4 text-blue-400" /> Tip
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center min-h-[28px]">
               {editingTip ? (
                 <Input
                   type="number"
@@ -85,19 +78,12 @@ export function BillInfo({ transaction, onUpdate }: BillInfoProps) {
                   step="0.01"
                 />
               ) : (
-                <>
-                  <div className="text-lg font-semibold text-slate-200">
-                    ${transaction.tip.toFixed(2)}
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8 text-slate-400 hover:text-slate-100 hover:bg-slate-700/50"
-                    onClick={() => setEditingTip(true)}
-                  >
-                    <Pencil className="h-4 w-4" />
-                  </Button>
-                </>
+                <div 
+                  className="text-lg font-semibold text-slate-200 cursor-pointer hover:text-slate-100"
+                  onClick={() => setEditingTip(true)}
+                >
+                  ${transaction.tip.toFixed(2)}
+                </div>
               )}
             </div>
           </div>
