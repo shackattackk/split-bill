@@ -2,7 +2,8 @@ import { Utensils, DollarSign } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Transaction } from "@/types/split-bill";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { debounce } from "lodash";
 
 interface BillInfoProps {
   transaction: Transaction;
@@ -12,6 +13,17 @@ interface BillInfoProps {
 export function BillInfo({ transaction, onUpdate }: BillInfoProps) {
   const [editingTax, setEditingTax] = useState(false);
   const [editingTip, setEditingTip] = useState(false);
+  const [tempTax, setTempTax] = useState(transaction.tax);
+  const [tempTip, setTempTip] = useState(transaction.tip);
+
+  const debouncedTaxUpdate = useMemo(
+    () => debounce((value: number) => onUpdate?.({ tax: value }), 500),
+    [onUpdate]
+  );
+  const debouncedTipUpdate = useMemo(
+    () => debounce((value: number) => onUpdate?.({ tip: value }), 500),
+    [onUpdate]
+  );
 
   return (
     <Card className="bg-slate-800/80 border border-slate-700/50 rounded-xl shadow-lg shadow-blue-500/5">
@@ -44,8 +56,12 @@ export function BillInfo({ transaction, onUpdate }: BillInfoProps) {
               {editingTax ? (
                 <Input
                   type="number"
-                  value={transaction.tax}
-                  onChange={(e) => onUpdate?.({ tax: parseFloat(e.target.value) || 0 })}
+                  value={tempTax}
+                  onChange={(e) => {
+                    const value = parseFloat(e.target.value) || 0;
+                    setTempTax(value);
+                    debouncedTaxUpdate(value);
+                  }}
                   onBlur={() => setEditingTax(false)}
                   autoFocus
                   className="bg-transparent border-0 p-0 h-auto text-lg font-semibold text-slate-200 focus:ring-0 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
@@ -56,7 +72,7 @@ export function BillInfo({ transaction, onUpdate }: BillInfoProps) {
                   className="text-lg font-semibold text-slate-200 cursor-pointer hover:text-slate-100"
                   onClick={() => setEditingTax(true)}
                 >
-                  ${transaction.tax.toFixed(2)}
+                  ${tempTax.toFixed(2)}
                 </div>
               )}
             </div>
@@ -69,8 +85,12 @@ export function BillInfo({ transaction, onUpdate }: BillInfoProps) {
               {editingTip ? (
                 <Input
                   type="number"
-                  value={transaction.tip}
-                  onChange={(e) => onUpdate?.({ tip: parseFloat(e.target.value) || 0 })}
+                  value={tempTip}
+                  onChange={(e) => {
+                    const value = parseFloat(e.target.value) || 0;
+                    setTempTip(value);
+                    debouncedTipUpdate(value);
+                  }}
                   onBlur={() => setEditingTip(false)}
                   autoFocus
                   className="bg-transparent border-0 p-0 h-auto text-lg font-semibold text-slate-200 focus:ring-0 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
@@ -81,7 +101,7 @@ export function BillInfo({ transaction, onUpdate }: BillInfoProps) {
                   className="text-lg font-semibold text-slate-200 cursor-pointer hover:text-slate-100"
                   onClick={() => setEditingTip(true)}
                 >
-                  ${transaction.tip.toFixed(2)}
+                  ${tempTip.toFixed(2)}
                 </div>
               )}
             </div>
