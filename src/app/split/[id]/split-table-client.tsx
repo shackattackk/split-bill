@@ -26,6 +26,7 @@ export default function SplitBillClient({
     );
 
   const [editingItem, setEditingItem] = useState<TransactionItem | null>(null);
+  const [isToggling, setIsToggling] = useState(false);
 
   const addPerson = async (name: string) => {
     try {
@@ -41,16 +42,20 @@ export default function SplitBillClient({
   };
 
   const toggleItem = async (personId: number, itemId: number) => {
-    try {
-      const isCurrentlySelected = selectedItems[personId]?.includes(itemId);
-      setSelectedItems((prev) => {
-        const personItems = prev[personId] || [];
-        const newItems = isCurrentlySelected
-          ? personItems.filter((id) => id !== itemId)
-          : [...personItems, itemId];
-        return { ...prev, [personId]: newItems };
-      });
+    if (isToggling) return; // Prevent multiple simultaneous operations
 
+    setIsToggling(true);
+    const isCurrentlySelected = selectedItems[personId]?.includes(itemId);
+
+    setSelectedItems((prev) => {
+      const personItems = prev[personId] || [];
+      const newItems = isCurrentlySelected
+        ? personItems.filter((id) => id !== itemId)
+        : [...personItems, itemId];
+      return { ...prev, [personId]: newItems };
+    });
+
+    try {
       if (isCurrentlySelected) {
         const { error } = await supabase
           .from("participant_items")
@@ -68,7 +73,16 @@ export default function SplitBillClient({
         if (error) throw error;
       }
     } catch (err) {
+      setSelectedItems((prev) => {
+        const personItems = prev[personId] || [];
+        const newItems = isCurrentlySelected
+          ? [...personItems, itemId]
+          : personItems.filter((id) => id !== itemId);
+        return { ...prev, [personId]: newItems };
+      });
       console.error("Error toggling item:", err);
+    } finally {
+      setIsToggling(false);
     }
   };
 
