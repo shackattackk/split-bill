@@ -14,7 +14,6 @@ import { useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useReceiptProcessing } from "@/hooks/use-receipt-processing";
 import { ReceiptProcessingContainer } from "@/components/receipt-processing-container";
-import { track } from "@vercel/analytics";
 
 export function BillInputOptions() {
   const router = useRouter();
@@ -39,7 +38,7 @@ export function BillInputOptions() {
       if (file.size > maxSize) {
         throw new Error("File size must be less than 5MB");
       }
-      track("upload_receipt_clicked");
+
       const reader = new FileReader();
       reader.onload = async (e) => {
         const base64 = e.target?.result as string;
@@ -57,12 +56,10 @@ export function BillInputOptions() {
   };
 
   const handleTakePhotoClick = () => {
-    track("take_photo_clicked");
     router.push("/camera");
   };
 
   const handleManualEntryClick = () => {
-    track("manual_entry_clicked");
     router.push("/manual-entry");
   };
 

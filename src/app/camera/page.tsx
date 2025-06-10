@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { ReceiptProcessingContainer } from "@/components/receipt-processing-container";
 import { useReceiptProcessing } from "@/hooks/use-receipt-processing";
-import { track } from "@vercel/analytics";
 
 export default function CameraPage() {
   const router = useRouter();
@@ -56,7 +55,7 @@ export default function CameraPage() {
 
   const capturePhoto = async () => {
     if (!videoRef.current) return;
-    track("capture_photo_clicked");
+
     const canvas = document.createElement("canvas");
     canvas.width = videoRef.current.videoWidth;
     canvas.height = videoRef.current.videoHeight;
