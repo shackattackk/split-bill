@@ -4,9 +4,9 @@ import { TransactionItem, Person } from "@/types/split-bill";
 import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
 
 interface ParticipantItemPayload {
-  participantId: number;
-  lineItemId: number;
-  isSelected: boolean;
+  participant_id: number;
+  line_item_id: number;
+  is_selected: boolean;
 }
 
 export function useSplitBillSubscriptions(
@@ -111,29 +111,29 @@ export function useSplitBillSubscriptions(
           filter: `participant_id=in.(${people.map((p) => p.id).join(",")})`,
         },
         (payload: RealtimePostgresChangesPayload<ParticipantItemPayload>) => {
-          if (payload.eventType === "INSERT" && payload.new.isSelected) {
-            const participantId = payload.new.participantId;
+          if (payload.eventType == "INSERT" && payload.new.is_selected) {
+            const participantId = payload.new.participant_id;
             if (typeof participantId === "number") {
               setSelectedItems((current) => {
                 const personItems = current[participantId] || [];
                 return {
                   ...current,
-                  [participantId]: [...personItems, payload.new.lineItemId],
+                  [participantId]: [...personItems, payload.new.line_item_id],
                 };
               });
             }
           } else if (
             payload.eventType === "DELETE" ||
-            (payload.eventType === "UPDATE" && !payload.new.isSelected)
+            (payload.eventType === "UPDATE" && !payload.new.is_selected)
           ) {
-            const participantId = payload.old.participantId;
+            const participantId = payload.old.participant_id;
             if (typeof participantId === "number") {
               setSelectedItems((current) => {
                 const personItems = current[participantId] || [];
                 return {
                   ...current,
                   [participantId]: personItems.filter(
-                    (id: number) => id !== payload.old.lineItemId
+                    (id: number) => id !== payload.old.line_item_id
                   ),
                 };
               });
