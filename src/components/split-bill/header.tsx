@@ -28,15 +28,15 @@ export function Header() {
           </Link>
         </Button>
         <Button
-          variant="ghost"
-          size="icon"
-          className="text-slate-400 hover:text-slate-100 hover:bg-slate-700/50 cursor-pointer transition-all relative"
+          variant="default"
+          size="sm"
+          className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-medium px-4 py-2 rounded-md flex items-center gap-2 transition-all relative cursor-pointer"
           onClick={handleCopy}
         >
-          <Share2 className="h-5 w-5" />
-          <span className="sr-only">Share</span>
+          <Share2 className="h-4 w-4" />
+          Share Bill
           {showCopied && (
-            <div className="absolute -top-8 right-0 bg-slate-800 text-white text-xs px-3 py-1.5 rounded-md shadow-lg border border-slate-700 z-50 whitespace-nowrap">
+            <div className="absolute top-full mt-2 right-0 bg-slate-800 text-white text-xs px-3 py-1.5 rounded-md shadow-lg border border-slate-700 z-50 whitespace-nowrap">
               Copied to clipboard!
             </div>
           )}
