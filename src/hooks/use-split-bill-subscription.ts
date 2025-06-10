@@ -123,17 +123,17 @@ export function useSplitBillSubscriptions(
               });
             }
           } else if (
-            payload.eventType === "DELETE" ||
-            (payload.eventType === "UPDATE" && !payload.new.is_selected)
+            payload.eventType === "UPDATE" &&
+            !payload.new.is_selected
           ) {
-            const participantId = payload.old.participant_id;
+            const participantId = payload.new.participant_id;
             if (typeof participantId === "number") {
               setSelectedItems((current) => {
                 const personItems = current[participantId] || [];
                 return {
                   ...current,
                   [participantId]: personItems.filter(
-                    (id: number) => id !== payload.old.line_item_id
+                    (id: number) => id !== payload.new.line_item_id
                   ),
                 };
               });

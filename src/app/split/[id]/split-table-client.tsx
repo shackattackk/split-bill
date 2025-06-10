@@ -14,7 +14,9 @@ interface SplitBillClientProps {
   transaction: Transaction;
 }
 
-export default function SplitBillClient({ transaction: initialTransaction }: SplitBillClientProps) {
+export default function SplitBillClient({
+  transaction: initialTransaction,
+}: SplitBillClientProps) {
   const [transaction, setTransaction] = useState(initialTransaction);
   const { people, editedItems, selectedItems, setSelectedItems } =
     useSplitBillSubscriptions(
@@ -52,7 +54,7 @@ export default function SplitBillClient({ transaction: initialTransaction }: Spl
       if (isCurrentlySelected) {
         const { error } = await supabase
           .from("participant_items")
-          .delete()
+          .update({ is_selected: false })
           .match({ participant_id: personId, line_item_id: itemId });
 
         if (error) throw error;
@@ -99,7 +101,10 @@ export default function SplitBillClient({ transaction: initialTransaction }: Spl
     setEditingItem(null);
   };
 
-  const handleUpdateTaxTip = async (updates: { tax?: number; tip?: number }) => {
+  const handleUpdateTaxTip = async (updates: {
+    tax?: number;
+    tip?: number;
+  }) => {
     try {
       const { error } = await supabase
         .from("transactions")
@@ -111,7 +116,7 @@ export default function SplitBillClient({ transaction: initialTransaction }: Spl
 
       if (error) throw error;
 
-      setTransaction(prev => ({
+      setTransaction((prev) => ({
         ...prev,
         tax: updates.tax ?? prev.tax,
         tip: updates.tip ?? prev.tip,
