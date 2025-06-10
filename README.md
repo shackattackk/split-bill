@@ -1,4 +1,4 @@
-# Split Party
+# Snapplit
 
 A modern web application built with Next.js that enables real-time collaborative bill splitting. Friends can instantly see updates as others select items and modify expenses, making it easy to split bills and expenses among groups.
 

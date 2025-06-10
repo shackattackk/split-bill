@@ -164,7 +164,7 @@ export default function SplitBillClient({ transaction: initialTransaction }: Spl
         </div>
       </main>
       <footer className="text-center text-xs text-slate-500 mt-8 pt-8 border-t border-slate-800/50">
-        © 2025 Split Party. All rights reserved.
+        © 2025 Snapplit. All rights reserved.
       </footer>
     </div>
   );
