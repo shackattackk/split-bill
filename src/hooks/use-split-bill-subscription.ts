@@ -116,6 +116,9 @@ export function useSplitBillSubscriptions(
             if (typeof participantId === "number") {
               setSelectedItems((current) => {
                 const personItems = current[participantId] || [];
+                if (personItems.includes(payload.new.line_item_id)) {
+                  return current;
+                }
                 return {
                   ...current,
                   [participantId]: [...personItems, payload.new.line_item_id],
