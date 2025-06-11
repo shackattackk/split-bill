@@ -115,7 +115,7 @@ export default function SplitBillClient({
         .from("line_items")
         .update({
           description: newName,
-          amount: newPrice.toString(),
+          amount: newPrice,
         })
         .eq("id", itemId);
 
@@ -138,8 +138,8 @@ export default function SplitBillClient({
       const { error } = await supabase
         .from("transactions")
         .update({
-          tax: updates.tax?.toString(),
-          tip: updates.tip?.toString(),
+          tax: updates.tax,
+          tip: updates.tip,
         })
         .eq("id", transaction.id);
 
