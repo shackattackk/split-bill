@@ -54,8 +54,8 @@ export default async function SplitBillPage({ params }: PageProps) {
         tip: Number(transaction.tip || 0),
         items: transaction.lineItems.map((item: LineItem) => ({
           id: item.id,
-          name: item.description || "Unknown Item",
-          price: Number(item.amount),
+          description: item.description || "Unknown Item",
+          amount: Number(item.amount),
         })),
         participants: transaction.participants.map((participant: Participant & { participantItems: ParticipantItem[] }) => ({
           id: participant.id,

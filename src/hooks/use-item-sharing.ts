@@ -31,7 +31,7 @@ export function useItemSharing({
         const currentTotal = itemTotals.get(person.id) || 0;
         itemTotals.set(
           person.id,
-          currentTotal + (item?.price || 0) / sharingCount
+          currentTotal + (item?.amount || 0) / sharingCount
         );
       });
     });

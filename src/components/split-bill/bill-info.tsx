@@ -42,7 +42,7 @@ export function BillInfo({ transaction, onUpdate }: BillInfoProps) {
             <div className="text-lg font-semibold text-slate-200">
               $
               {(
-                transaction.items.reduce((sum, item) => sum + item.price, 0) +
+                transaction.items.reduce((sum, item) => sum + item.amount, 0) +
                 transaction.tax +
                 transaction.tip
               ).toFixed(2)}

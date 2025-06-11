@@ -40,16 +40,13 @@ export function useSplitBillSubscriptions(
         },
         (payload: RealtimePostgresChangesPayload<TransactionItem>) => {
           if (payload.eventType === "INSERT") {
+            console.log("payload", payload);
             setEditedItems((current) => [...current, payload.new]);
           } else if (payload.eventType === "UPDATE") {
             setEditedItems((current) =>
               current.map((item) =>
                 item.id === payload.new.id ? payload.new : item
               )
-            );
-          } else if (payload.eventType === "DELETE") {
-            setEditedItems((current) =>
-              current.filter((item) => item.id !== payload.old.id)
             );
           }
         }
@@ -82,10 +79,6 @@ export function useSplitBillSubscriptions(
                   ? { ...payload.new, items: person.items }
                   : person
               )
-            );
-          } else if (payload.eventType === "DELETE") {
-            setPeople((current) =>
-              current.filter((person) => person.id !== payload.old.id)
             );
           }
         }

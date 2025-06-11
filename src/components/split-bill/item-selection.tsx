@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Person, TransactionItem } from "@/types/split-bill";
 import { useItemSharing } from "@/hooks/use-item-sharing";
+import { AddItemPopover } from "./add-item-popover";
 
 interface ItemSelectionProps {
   items: TransactionItem[];
@@ -14,6 +15,7 @@ interface ItemSelectionProps {
   onSaveEdit: (itemId: number, newName: string, newPrice: number) => void;
   onCancelEdit: () => void;
   editingItem: TransactionItem | null;
+  onAddItem: (name: string, price: number) => void;
 }
 
 export function ItemSelection({
@@ -25,15 +27,21 @@ export function ItemSelection({
   onSaveEdit,
   onCancelEdit,
   editingItem,
+  onAddItem,
 }: ItemSelectionProps) {
-  const { getSharingCount, isItemShared } = useItemSharing({ items, people, selectedItems });
+  const { getSharingCount, isItemShared } = useItemSharing({
+    items,
+    people,
+    selectedItems,
+  });
 
   return (
     <Card className="bg-slate-800/80 border border-slate-700/50 rounded-xl shadow-lg shadow-blue-500/5">
-      <CardHeader className="pb-2">
-        <CardTitle className="flex items-center gap-2 text-white text-lg">
+      <CardHeader className="pb-2 flex items-center justify-between">
+        <CardTitle className="flex items-center gap-4 text-white text-lg">
           <Utensils className="h-5 w-5 text-blue-400" /> Select Items
         </CardTitle>
+        <AddItemPopover onAddItem={onAddItem} />
       </CardHeader>
       <CardContent>
         <div className="space-y-2">
@@ -41,20 +49,18 @@ export function ItemSelection({
             <div
               key={item.id}
               className={`bg-slate-900/60 border border-slate-700/50 rounded-lg p-3 hover:bg-slate-900/80 transition-all ${
-                isItemShared(item.id)
-                  ? "bg-blue-500/5 border-blue-500/20"
-                  : ""
+                isItemShared(item.id) ? "bg-blue-500/5 border-blue-500/20" : ""
               }`}
             >
               {editingItem?.id === item.id ? (
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <Input
-                      value={editingItem.name}
+                      value={editingItem.description}
                       onChange={(e) =>
                         onEditItem({
                           ...editingItem,
-                          name: e.target.value,
+                          description: e.target.value,
                         })
                       }
                       className="bg-slate-800 border-slate-700 text-white"
@@ -62,11 +68,11 @@ export function ItemSelection({
                     />
                     <Input
                       type="number"
-                      value={editingItem.price}
+                      value={editingItem.amount}
                       onChange={(e) =>
                         onEditItem({
                           ...editingItem,
-                          price: parseFloat(e.target.value) || 0,
+                          amount: parseFloat(e.target.value) || 0,
                         })
                       }
                       className="bg-slate-800 border-slate-700 text-white w-24 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
@@ -79,8 +85,8 @@ export function ItemSelection({
                       onClick={() =>
                         onSaveEdit(
                           item.id,
-                          editingItem.name,
-                          editingItem.price
+                          editingItem.description,
+                          editingItem.amount
                         )
                       }
                       className="bg-blue-600 hover:bg-blue-500 text-white cursor-pointer"
@@ -104,7 +110,7 @@ export function ItemSelection({
                     <div className="flex items-center gap-2">
                       <div className="flex items-center gap-1.5">
                         <span className="text-white font-medium text-base sm:text-lg">
-                          {item.name}
+                          {item.description}
                         </span>
                         {isItemShared(item.id) && (
                           <span className="hidden sm:inline text-xs font-medium text-blue-300 bg-blue-500/10 px-2 py-0.5 rounded-full">
@@ -120,7 +126,7 @@ export function ItemSelection({
                     </div>
                     <div className="flex items-center gap-2">
                       <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-blue-400 font-semibold text-base sm:text-lg">
-                        ${item.price.toFixed(2)}
+                        ${item.amount.toFixed(2)}
                       </span>
                       <Button
                         variant="ghost"
@@ -167,4 +173,4 @@ export function ItemSelection({
       </CardContent>
     </Card>
   );
-} 
+}

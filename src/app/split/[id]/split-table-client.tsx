@@ -41,8 +41,22 @@ export default function SplitBillClient({
     }
   };
 
+  const addItem = async (name: string, price: number) => {
+    try {
+      const { error } = await supabase.from("line_items").insert({
+        transaction_id: transaction.id,
+        description: name,
+        amount: price,
+      });
+
+      if (error) throw error;
+    } catch (err) {
+      console.error("Error adding item:", err);
+    }
+  };
+
   const toggleItem = async (personId: number, itemId: number) => {
-    if (isToggling) return; // Prevent multiple simultaneous operations
+    if (isToggling) return; 
 
     setIsToggling(true);
     const isCurrentlySelected = selectedItems[personId]?.includes(itemId);
@@ -167,6 +181,7 @@ export default function SplitBillClient({
               onSaveEdit={handleSaveEdit}
               onCancelEdit={handleCancelEdit}
               editingItem={editingItem}
+              onAddItem={addItem}
             />
           </div>
 
