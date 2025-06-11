@@ -43,7 +43,7 @@ export function PeopleManagement({ people, onAddPerson }: PeopleManagementProps)
             <UserPlus className="h-4 w-4 mr-1" /> Add
           </Button>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2" data-testid="people-list">
           {people.map((person) => (
             <div
               key={person.id}
