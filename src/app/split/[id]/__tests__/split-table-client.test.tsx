@@ -42,6 +42,16 @@ jest.mock("@/hooks/use-split-bill-subscription", () => ({
                 setEditedItems((i: any) => [...i, payload.new]);
               }
               if (
+                payload.table === "line_items" &&
+                payload.eventType === "UPDATE"
+              ) {
+                setEditedItems((items: any) =>
+                  items.map((item: any) =>
+                    item.id === payload.new.id ? payload.new : item
+                  )
+                );
+              }
+              if (
                 payload.table === "participant_items" &&
                 (payload.eventType === "INSERT" ||
                   (payload.eventType === "UPDATE" && payload.new.is_selected))
@@ -273,23 +283,23 @@ describe("SplitBillClient Advanced Real-time Scenarios", () => {
     ],
   };
 
-//   it("should update an item's description and price from a real-time event", () => {
-//     render(<SplitBillClient transaction={mockTransaction} />);
-//     const itemRow = screen.getByTestId("item-row-1");
-//     expect(within(itemRow).getByText("Coffee")).toBeInTheDocument();
-//     expect(within(itemRow).getByText("$4.00")).toBeInTheDocument();
+  it("should update an item's description and price from a real-time event", () => {
+    render(<SplitBillClient transaction={mockTransaction} />);
+    const itemRow = screen.getByTestId("item-row-1");
+    expect(within(itemRow).getByText("Coffee")).toBeInTheDocument();
+    expect(within(itemRow).getByText("$4.00")).toBeInTheDocument();
 
-//     act(() => {
-//       (global as any).__mockOn({
-//         table: "line_items",
-//         eventType: "UPDATE",
-//         new: { id: 1, description: "Espresso", amount: 5 },
-//       });
-//     });
+    act(() => {
+      (global as any).__mockOn({
+        table: "line_items",
+        eventType: "UPDATE",
+        new: { id: 1, description: "Espresso", amount: 5 },
+      });
+    });
 
-//     expect(within(itemRow).getByText("Espresso")).toBeInTheDocument();
-//     expect(within(itemRow).getByText("$5.00")).toBeInTheDocument();
-//   });
+    expect(within(itemRow).getByText("Espresso")).toBeInTheDocument();
+    expect(within(itemRow).getByText("$5.00")).toBeInTheDocument();
+  });
 
   it("should update summaries correctly when multiple people select the same item", () => {
     render(<SplitBillClient transaction={mockTransaction} />);
