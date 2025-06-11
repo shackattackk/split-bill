@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
-import { TransactionItem, Person } from "@/types/split-bill";
+import { TransactionItem, Person, Transaction } from "@/types/split-bill";
 import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
 
 interface ParticipantItemPayload {
@@ -12,7 +12,8 @@ interface ParticipantItemPayload {
 export function useSplitBillSubscriptions(
   transactionId: string,
   initialPeople: Person[],
-  initialItems: TransactionItem[]
+  initialItems: TransactionItem[],
+  setTransaction: (updater: (prev: Transaction) => Transaction) => void
 ) {
   const [people, setPeople] = useState<Person[]>(initialPeople);
   const [editedItems, setEditedItems] =
@@ -40,14 +41,23 @@ export function useSplitBillSubscriptions(
         },
         (payload: RealtimePostgresChangesPayload<TransactionItem>) => {
           if (payload.eventType === "INSERT") {
-            console.log("payload", payload);
             setEditedItems((current) => [...current, payload.new]);
+            setTransaction((prev) => ({
+              ...prev,
+              items: [...prev.items, payload.new],
+            }));
           } else if (payload.eventType === "UPDATE") {
             setEditedItems((current) =>
               current.map((item) =>
                 item.id === payload.new.id ? payload.new : item
               )
             );
+            setTransaction((prev) => ({
+              ...prev,
+              items: prev.items.map((item) =>
+                item.id === payload.new.id ? payload.new : item
+              ),
+            }));
           }
         }
       )

@@ -22,7 +22,8 @@ export default function SplitBillClient({
     useSplitBillSubscriptions(
       initialTransaction.id,
       initialTransaction.participants,
-      initialTransaction.items
+      initialTransaction.items,
+      setTransaction
     );
 
   const [editingItem, setEditingItem] = useState<TransactionItem | null>(null);
