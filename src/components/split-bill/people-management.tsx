@@ -30,12 +30,14 @@ export function PeopleManagement({ people, onAddPerson }: PeopleManagementProps)
       <CardContent>
         <div className="flex gap-2 mb-3">
           <Input
+            data-testid="add-person-input"
             value={newPersonName}
             onChange={(e) => setNewPersonName(e.target.value)}
             placeholder="Enter name"
             className="bg-slate-900/60 border border-slate-700/50 text-white placeholder:text-slate-500 rounded-lg focus:border-blue-500/50 focus:ring-blue-500/20 transition-all"
           />
           <Button
+            data-testid="add-person-button"
             onClick={handleAddPerson}
             className="bg-blue-600 hover:bg-blue-500 text-white rounded-lg px-4 transition-all duration-200"
             disabled={!newPersonName.trim()}
@@ -43,7 +45,7 @@ export function PeopleManagement({ people, onAddPerson }: PeopleManagementProps)
             <UserPlus className="h-4 w-4 mr-1" /> Add
           </Button>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2" data-testid="people-list">
           {people.map((person) => (
             <div
               key={person.id}

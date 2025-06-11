@@ -48,6 +48,7 @@ export function Summary({
           {people.map((person) => (
             <div
               key={person.id}
+              data-testid={`summary-card-${person.id}`}
               className="bg-slate-900/60 border border-slate-700/50 rounded-lg p-3 hover:bg-slate-900/80 transition-all duration-300"
             >
               <div className="flex items-center gap-2 mb-1">

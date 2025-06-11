@@ -48,6 +48,7 @@ export function ItemSelection({
           {items.map((item) => (
             <div
               key={item.id}
+              data-testid={`item-row-${item.id}`}
               className={`bg-slate-900/60 border border-slate-700/50 rounded-lg p-3 hover:bg-slate-900/80 transition-all ${
                 isItemShared(item.id) ? "bg-blue-500/5 border-blue-500/20" : ""
               }`}
@@ -154,6 +155,7 @@ export function ItemSelection({
                     {people.map((person) => (
                       <button
                         key={person.id}
+                        data-testid={`toggle-item-${item.id}-for-person-${person.id}`}
                         onClick={() => onToggleItem(person.id, item.id)}
                         className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-lg border text-xs sm:text-sm transition-all duration-200 cursor-pointer active:scale-95 ${
                           selectedItems[person.id]?.includes(item.id)
