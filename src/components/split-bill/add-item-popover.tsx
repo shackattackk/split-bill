@@ -25,7 +25,10 @@ export function AddItemPopover({ onAddItem }: AddItemPopoverProps) {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button className="bg-blue-600 hover:bg-blue-500 text-white rounded-lg px-4 transition-all duration-200">
+        <Button
+          data-testid="add-item-popover-trigger"
+          className="bg-blue-600 hover:bg-blue-500 text-white rounded-lg px-4 transition-all duration-200"
+        >
           <Plus className="h-4 w-4 mr-2" />
           Add Item
         </Button>
@@ -34,12 +37,14 @@ export function AddItemPopover({ onAddItem }: AddItemPopoverProps) {
         <div className="space-y-4">
           <div className="space-y-2">
             <Input
+              data-testid="add-item-name-input"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Item name"
               className="bg-slate-900/60 border-slate-700/50 text-white placeholder:text-slate-500 rounded-lg focus:border-blue-500/50 focus:ring-blue-500/20 transition-all"
             />
             <Input
+              data-testid="add-item-price-input"
               type="number"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
@@ -57,6 +62,7 @@ export function AddItemPopover({ onAddItem }: AddItemPopoverProps) {
               Cancel
             </Button>
             <Button
+              data-testid="add-item-submit-button"
               onClick={handleSubmit}
               disabled={!name.trim() || !price}
               className="bg-blue-600 hover:bg-blue-500 text-white"

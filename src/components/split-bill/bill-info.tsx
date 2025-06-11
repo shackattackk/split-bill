@@ -55,6 +55,7 @@ export function BillInfo({ transaction, onUpdate }: BillInfoProps) {
             <div className="flex items-center min-h-[28px]">
               {editingTax ? (
                 <Input
+                  data-testid="tax-input"
                   type="number"
                   value={tempTax}
                   onChange={(e) => {
@@ -68,7 +69,8 @@ export function BillInfo({ transaction, onUpdate }: BillInfoProps) {
                   step="0.01"
                 />
               ) : (
-                <div 
+                <div
+                  data-testid="tax-display"
                   className="text-lg font-semibold text-slate-200 cursor-pointer hover:text-slate-100"
                   onClick={() => setEditingTax(true)}
                 >
@@ -84,6 +86,7 @@ export function BillInfo({ transaction, onUpdate }: BillInfoProps) {
             <div className="flex items-center min-h-[28px]">
               {editingTip ? (
                 <Input
+                  data-testid="tip-input"
                   type="number"
                   value={tempTip}
                   onChange={(e) => {
@@ -97,7 +100,8 @@ export function BillInfo({ transaction, onUpdate }: BillInfoProps) {
                   step="0.01"
                 />
               ) : (
-                <div 
+                <div
+                  data-testid="tip-display"
                   className="text-lg font-semibold text-slate-200 cursor-pointer hover:text-slate-100"
                   onClick={() => setEditingTip(true)}
                 >
