@@ -66,7 +66,7 @@ export function useSplitBillSubscriptions(
     return () => {
       channel.unsubscribe();
     };
-  }, [transactionId]);
+  }, [transactionId, setTransaction]);
 
   useEffect(() => {
     const channel = supabase
