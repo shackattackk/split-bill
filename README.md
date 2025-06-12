@@ -64,11 +64,12 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - `pnpm build` - Build the application for production
 - `pnpm start` - Start the production server
 - `pnpm lint` - Run ESLint
+- `pnpm test` - Run unit tests
 - `pnpm trigger:dev` - Start Trigger.dev worker in development mode
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) before submitting a Pull Request.
 
 ## License
 
