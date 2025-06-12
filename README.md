@@ -71,6 +71,11 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - `pnpm test` - Run unit tests
 - `pnpm trigger:dev` - Start Trigger.dev worker in development mode
 
+## Live Demo
+
+Visit the live application at [snapplit.com](https://snapplit.com)
+
+
 ## Contributing
 
 Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) before submitting a Pull Request.
