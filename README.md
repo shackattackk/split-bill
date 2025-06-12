@@ -1,6 +1,10 @@
 # Snapplit
 
-A modern web application built with Next.js that enables real-time collaborative bill splitting. Friends can instantly see updates as others select items and modify expenses, making it easy to split bills and expenses among groups.
+Just snap, split, and relax! Snapplit turns any receipt photo into an instant bill-splitting party. Watch expenses update in real-time as everyone picks their items - no more awkward money talks or calculator confusion. Whether it's a casual dinner or a group vacation, Snapplit makes dividing expenses as smooth as your social life should be. Simply take a photo of your receipt, and let our smart OCR do the heavy lifting while you focus on the fun.
+
+![Landing Page](/public/screenshot_1.png)
+![Split Page](/public/screenshot_2.png)
+
 
 ## Features
 
